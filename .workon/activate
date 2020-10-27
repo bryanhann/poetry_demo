@@ -1,0 +1,67 @@
+#!/bin/sh
+export BHW_VENV=$BHW/.tmp/workon/venv
+export BHW_REQ=$BHW/requirements.txt
+
+note () { 
+    printf "######## $1\n"; sleep .3; }
+
+bhw_venv_remove () {
+    note 'removing old virtual environment'
+    rm -rf ${BHW_VENV}
+}
+
+bhw_venv_create () {
+    note 'installing new virtual environment'
+    python3 -m venv ${BHW_VENV}
+}
+
+bhw_venv_activate () {
+    note 'activating environment'
+    source ${BHW_VENV}/bin/activate
+}
+
+bhw_pip_upgrade () {
+    note 'upgrading pip'
+    pip install --upgrade pip
+}
+
+bhw_pip_install_e () {
+    [ -f $BHW/setup.py  ] && note 'installing local package'
+    [ -f $BHW/setup.py  ] && pip install -e ${BHW}
+}
+bhw_pip_install_r () {
+    [ -f $BHW_REQ ] && note 'installing requirements.txt'
+    [ -f $BHW_REQ ] && pip install -r $BHW_REQ
+}
+bhw_cleanup () {
+    note 'cleaning up the mess'
+    rm -rf $BHW/*.egg-info > /dev/null 2> /dev/null
+}
+
+bhw_runtests () {
+    note 'running test'
+    pytest $BHW
+}
+
+bhw_reinstall () {
+    bhw_venv_remove
+    bhw_venv_create
+    bhw_venv_activate
+    bhw_pip_upgrade
+    bhw_pip_install_e
+    bhw_pip_install_r
+    bhw_cleanup
+    bhw_runtests
+}
+
+bhw_help () {
+    cat $BHW/.workon/activate | grep "^bhw_"
+    set | grep ^bhw_
+}
+
+bhw () {
+    [ -z "${1}"  ] && echo try 'bhw help'
+    [ -z "${1}"  ] || bhw_$*
+}
+
+bhw_reinstall

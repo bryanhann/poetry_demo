@@ -1,0 +1,6 @@
+#!/bin/sh
+[ true              ] && export bhw=
+[ -d ${PWD}/.workon ] && export bhw="${PWD}"
+[ "$1" = "--at"     ] && export bhw="${2}" && shift && shift
+[ -z ${bhw}         ] && echo "try . ./workon"
+[ -z ${bhw}         ] || source ${bhw}/.workon/workon.sh $*
