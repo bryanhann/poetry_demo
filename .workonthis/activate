@@ -55,7 +55,7 @@ bhw_reinstall () {
 }
 
 bhw_help () {
-    cat $BHW/.workon/activate | grep "^bhw_"
+    cat $BHW/.workonthis/activate | grep "^bhw_"
     set | grep ^bhw_
 }
 
@@ -64,4 +64,4 @@ bhw () {
     [ -z "${1}"  ] || bhw_$*
 }
 
-bhw_reinstall
+echo activated. If you sourced this then try 'bhw help'

@@ -1,0 +1,1 @@
+echo WOTMAIN: [$0] [$*]

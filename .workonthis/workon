@@ -1,0 +1,27 @@
+#!/bin/sh
+_h () {
+    $PWD/.workonthis/help.sh
+}
+
+_y () {
+    source $PWD/.workonthis/activate
+}
+
+_d () {
+    source $PWD/.workonthis/warn.sh
+    source $PWD/.workonthis/activate
+}
+
+
+if   [ "${1}" = "-h" ]; then  shift; source $PWD/.workonthis/help
+elif [ "${1}" = "-y" ]; then  shift; source $PWD/.workonthis/activate
+elif [ true          ]; then         source $PWD/.workonthis/warn ; source $PWD/.workonthis/activate
+fi
+
+#if   [ "${1}" = "-h" ]; then  shift; _h $*
+#elif [ "${1}" = "-y" ]; then  shift; _y $*
+#elif [ true ];          then  _d $*
+#fi
+
+
+
